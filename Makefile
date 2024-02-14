@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/02/14 10:38:23 by galves-f         ###   ########.fr        #
+#    Updated: 2024/02/14 11:28:20 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ MAIN			= main.c
 
 LIBS_DIR 		= libs
 LIBFT_DIR 		= $(LIBS_DIR)/libft
-MLX_DIR 		= $(LIBS_DIR)/mlx
+MLX_DIR_LIN 	= $(LIBS_DIR)/mlx_linux
+MLX_DIR_MAC 	= $(LIBS_DIR)/mlx_mac
 
 ################################################################################
 #                                  Makefile  objs                              #
@@ -83,13 +84,17 @@ ifeq ($(detected_OS),Darwin)
 				RESULT=$$?
 	# INCLUDE_MLX = -I/opt/X11/include -I$(MLX_DIR)
 	# MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/X11/lib -lXext -lX11 -framework OpenGL -framework AppKit
-	INCLUDE_MLX = -Imlx
-	MLX_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
+	MLX_URL = https://github.com/gabref/minilibx-mac-osx.git
+	MLX_DIR = $(MLX_DIR_MAC)
+	INCLUDE_MLX = -I$(MLX_DIR)
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 else ifeq ($(detected_OS),Linux)
 	RUN_CMD = script -q -e -c "$(1)" $@.log > /dev/null; \
 				RESULT=$$?; \
 				sed -i '1d' $@.log; \
 				sed -i "$$(($$(wc -l < $@.log)-1)),\$$d" $@.log
+	MLX_URL = https://github.com/42Paris/minilibx-linux.git
+	MLX_DIR = $(MLX_DIR_LIN)
 	INCLUDE_MLX = -I/usr/include -I$(MLX_DIR)
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11
 else
@@ -181,7 +186,7 @@ $(LIBFT_DIR):
 	@git clone https://github.com/gabref/libft.git $(LIBFT_DIR)
 
 $(MLX_DIR):
-	@git clone https://github.com/42Paris/minilibx-linux.git $(MLX_DIR)
+	@git clone $(MLX_URL) $(MLX_DIR)
 	@make -C $(MLX_DIR)
 
 

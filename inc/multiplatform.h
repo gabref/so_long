@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:24:48 by galves-f          #+#    #+#             */
-/*   Updated: 2024/02/14 10:31:08 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:28:09 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # ifdef __linux__
 
-#  include "../libs/mlx/mlx.h"
+#  include "../libs/mlx_linux/mlx.h"
 #  include <X11/X.h>
 #  include <X11/keysym.h>
 
@@ -29,7 +29,8 @@
 
 # elif __APPLE__
 
-#  include <mlx.h>
+#  include "../libs/mlx_mac/mlx.h"
+#  include <X11/X.h>
 #  define KEY_RELEASE 3
 #  define KEY_RELEASE_MASK 1L << 1
 #  define DESTROY_NOTIFY 17
