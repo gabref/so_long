@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/02/14 11:28:20 by galves-f         ###   ########.fr        #
+#    Updated: 2024/02/14 11:35:41 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -175,9 +175,7 @@ norminette:
 
 install_libs: $(LIBS_DIR)
 	@$(MAKE) $(LIBFT_DIR)
-ifeq ($(detected_OS),Linux)
 	@$(MAKE) $(MLX_DIR)
-endif
 
 $(LIBS_DIR):
 	@mkdir -p $(LIBS_DIR)

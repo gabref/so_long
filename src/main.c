@@ -11,7 +11,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 int on_destroy(t_data *t)
 {
 	mlx_destroy_window(t->mlx, t->mlx_win);
-	mlx_destroy_display(t->mlx);
+	// mlx_destroy_display(t->mlx);
 	free(t->mlx);
 	exit(0);
 	return (0);
