@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/02/14 10:35:26 by galves-f         ###   ########.fr        #
+#    Updated: 2024/02/14 10:38:23 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,8 +81,10 @@ endif
 ifeq ($(detected_OS),Darwin) 
 	RUN_CMD = script -q $@.log $1 > /dev/null; \
 				RESULT=$$?
-	INCLUDE_MLX = -I/opt/X11/include -I$(MLX_DIR)
-	MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/X11/lib -lXext -lX11 -framework OpenGL -framework AppKit
+	# INCLUDE_MLX = -I/opt/X11/include -I$(MLX_DIR)
+	# MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/X11/lib -lXext -lX11 -framework OpenGL -framework AppKit
+	INCLUDE_MLX = -Imlx
+	MLX_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
 else ifeq ($(detected_OS),Linux)
 	RUN_CMD = script -q -e -c "$(1)" $@.log > /dev/null; \
 				RESULT=$$?; \
@@ -168,7 +170,9 @@ norminette:
 
 install_libs: $(LIBS_DIR)
 	@$(MAKE) $(LIBFT_DIR)
+ifeq ($(detected_OS),Linux)
 	@$(MAKE) $(MLX_DIR)
+endif
 
 $(LIBS_DIR):
 	@mkdir -p $(LIBS_DIR)
@@ -176,11 +180,9 @@ $(LIBS_DIR):
 $(LIBFT_DIR):
 	@git clone https://github.com/gabref/libft.git $(LIBFT_DIR)
 
-ifeq ($(detected_OS),Linux)
 $(MLX_DIR):
 	@git clone https://github.com/42Paris/minilibx-linux.git $(MLX_DIR)
 	@make -C $(MLX_DIR)
-endif
 
 
 .PHONY:		all clean fclean re header norminette
