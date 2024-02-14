@@ -1,5 +1,4 @@
 #include "../inc/so_long.h"
-#include <X11/X.h>
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -21,7 +20,7 @@ int on_destroy(t_data *t)
 int on_keypress(int keysym, t_data *t)
 {
 	(void)t;
-	if (keysym == XK_Escape)
+	if (keysym == KEY_ESCAPE)
 	{
 		printf("The %d key (ESC) has been pressed\n\n", keysym);
 		on_destroy(t);
@@ -41,8 +40,8 @@ int	main(void)
 	if (!t.mlx_win)
 		return (1);
 
-	mlx_hook(t.mlx_win, KeyRelease, KeyReleaseMask, &on_keypress, &t);
-	mlx_hook(t.mlx_win, DestroyNotify, StructureNotifyMask, &on_destroy, &t);
+	mlx_hook(t.mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, &on_keypress, &t);
+	mlx_hook(t.mlx_win, DESTROY_NOTIFY, STRUCT_NOTIFY_MASK, &on_destroy, &t);
 
 	t.img = mlx_new_image(t.mlx, 600, 400);
 	t.addr = mlx_get_data_addr(t.img, &t.bits_per_pixel, &t.line_length,

@@ -2,10 +2,8 @@
 # define SO_LONG_H
 
 # include "../libs/libft/inc/libft.h"
-# include "../libs/mlx/mlx.h"
+# include "multiplatform.h"
 # include <stdio.h>
-# include <X11/keysym.h>
-# include <X11/X.h>
 
 typedef struct s_data
 {
