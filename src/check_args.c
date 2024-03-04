@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */ /*   check_args.c                                       :+:      :+:    :+:   */
+/*                                                        :::      ::::::::   */
+/*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/19 17:19:21 by galves-f          #+#    #+#             */
-/*   Updated: 2024/02/19 19:40:34 by galves-f         ###   ########.fr       */
+/*   Created: 2024/03/04 01:36:02 by galves-f          #+#    #+#             */
+/*   Updated: 2024/03/04 01:51:08 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/so_long.h"
+#include "../inc/so_long.h"
 
 static char	*read_map(char *file)
 {
@@ -38,9 +39,11 @@ static char	*read_map(char *file)
 	return (map);
 }
 
-void print_map(t_map *map)
+void	print_map(t_map *map)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (map->map[i])
 	{
 		printf("%s\n", map->map[i]);
@@ -48,9 +51,26 @@ void print_map(t_map *map)
 	}
 }
 
-t_map *check_args(int ac, char **av)
+void	free_map(t_map *map)
+{
+	ft_free_2d_array((void **)map->map);
+	if (map)
+		free(map);
+}
+
+void	free_map_and_exit(t_map *map, char *message)
+{
+	free_map(map);
+	ft_putstr_fd(message, 2);
+	exit(1);
+}
+
+t_map	*check_args(int ac, char **av)
 {
 	t_map	*map;
+	char	*map_inline;
+	int		i;
+	int		j;
 
 	if (ac != 2)
 	{
@@ -64,7 +84,7 @@ t_map *check_args(int ac, char **av)
 	}
 	// read the map file
 	// check if the file exists
-	char *map_inline = read_map(av[1]);
+	map_inline = read_map(av[1]);
 	printf("%s", map_inline);
 	map = malloc(sizeof(t_map));
 	if (!map)
@@ -94,33 +114,15 @@ t_map *check_args(int ac, char **av)
 	}
 	printf("check map not rectangular\n");
 	if (map->map[1] == NULL)
-	{
-		ft_putstr_fd("Error\nMap is not rectangular\n", 2);
-		free(map->map[0]);
-		free(map->map);
-		free(map);
-		exit(1);
-	}
+		free_map_and_exit(map, "Error\nMap is not rectangular\n");
 	// check if the map is rectangular
-	int i = 0;
+	i = 0;
 	map->cols = ft_strlen(map->map[0]);
 	while (map->map[i])
-	{
-		if ((int)ft_strlen(map->map[i]) != map->cols)
-		{
-			ft_putstr_fd("Error\nMap is not rectangular\n", 2);
-			// free entire map
-			free(map->map[i]);
-			free(map->map);
-			free(map);
-			exit(1);
-		}
-		i++;
-	}
+		if ((int)ft_strlen(map->map[i++]) != map->cols)
+			free_map_and_exit(map, "Error\nMap is not rectangular\n");
 	map->rows = i;
-
 	// check if the map is surrounded by walls
-	int j;
 	i = 0;
 	while (map->map[i])
 	{
@@ -128,31 +130,14 @@ t_map *check_args(int ac, char **av)
 		{
 			j = 0;
 			while (map->map[i][j])
-			{
-				if (map->map[i][j] != '1')
-				{
-					ft_putstr_fd("Error\nMap is not surrounded by walls\n", 2);
-					// free entire map
-					free(map->map[i]);
-					free(map->map);
-					free(map);
-					exit(1);
-				}
-				j++;
-			}
+				if (map->map[i][j++] != '1')
+					free_map_and_exit(map,
+						"Error\nMap is not surrounded by walls\n");
 		}
 		if (map->map[i][0] != '1' || map->map[i][map->cols - 1] != '1')
-		{
-			ft_putstr_fd("Error\nMap is not surrounded by walls\n", 2);
-			// free entire map
-			free(map->map[i]);
-			free(map->map);
-			free(map);
-			exit(1);
-		}
+			free_map_and_exit(map, "Error\nMap is not surrounded by walls\n");
 		i++;
 	}
-
 	// check if the map has only valid characters
 	map->counts = (t_counts){0, 0, 0, 0, 0, 0};
 	i = 0;
@@ -175,68 +160,25 @@ t_map *check_args(int ac, char **av)
 			else if (map->map[i][j] == 'X')
 				map->counts.enemies++;
 			else
-			{
-				ft_putstr_fd("Error\nInvalid character in map\n", 2);
-				// free entire map
-				free(map->map[i]);
-				free(map->map);
-				free(map);
-				exit(1);
-			}
+				free_map_and_exit(map, "Error\nInvalid character in map\n");
 			j++;
 		}
 		i++;
 	}
-
 	// check if there is only one exit
 	if (map->counts.exit != 1)
-	{
-		ft_putstr_fd("Error\nInvalid number of exits\n", 2);
-		// free entire map
-		free(map->map[i]);
-		free(map->map);
-		free(map);
-		exit(1);
-	}
+		free_map_and_exit(map, "Error\nInvalid number of exits\n");
 	// check if there is only one player
 	if (map->counts.player != 1)
-	{
-		ft_putstr_fd("Error\nInvalid number of players\n", 2);
-		// free entire map
-		free(map->map[i]);
-		free(map->map);
-		free(map);
-		exit(1);
-	}
+		free_map_and_exit(map, "Error\nInvalid number of players\n");
 	// check if there is at least one collectible
 	if (map->counts.collectibles < 1)
-	{
-		ft_putstr_fd("Error\nInvalid number of collectibles\n", 2);
-		// free entire map
-		free(map->map[i]);
-		free(map->map);
-		free(map);
-		exit(1);
-	}
+		free_map_and_exit(map, "Error\nInvalid number of collectibles\n");
 	// check if there is at least one floor
 	if (map->counts.empty < 1)
-	{
-		ft_putstr_fd("Error\nInvalid number of floors\n", 2);
-		// free entire map
-		free(map->map[i]);
-		free(map->map);
-		free(map);
-		exit(1);
-	}
+		free_map_and_exit(map, "Error\nInvalid number of floors\n");
 	// check if there is at least one wall
 	if (map->counts.wall < 1)
-	{
-		ft_putstr_fd("Error\nInvalid number of walls\n", 2);
-		// free entire map
-		free(map->map[i]);
-		free(map->map);
-		free(map);
-		exit(1);
-	}
+		free_map_and_exit(map, "Error\nInvalid number of walls\n");
 	return (map);
 }
