@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:48:08 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/05 19:20:04 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:41:40 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	draw_map(t_game *g)
 	int		px;
 	int		py;
 	t_img	img;
+	int		x;
+	int		y;
 
 	img = new_file_img(WALL_PATH, g->win);
 	px = 1;
@@ -55,8 +57,10 @@ void	draw_map(t_game *g)
 		py = 0;
 	}
 	put_img_to_img(g->game_img, img, px, py);
+	x = (g->win.width - g->game_img.w) / 2;
+	y = SPRITE_SIZE;
 	mlx_put_image_to_window(g->game_img.win.mlx_ptr, g->game_img.win.win_ptr,
-		g->game_img.img_ptr, 0, 0);
+		g->game_img.img_ptr, x, y);
 	destroy_image(img);
 }
 
@@ -66,11 +70,10 @@ void	game_init(t_map *map)
 	t_game	game;
 
 	game.map = map;
-	game_win = new_window(SIZE * game.map->cols, SIZE * game.map->rows,
-			"animations");
+	game_win = new_window(get_win_w(game), get_win_h(game), TITLE);
 	ft_putstr_fd("Game initialized\n", 1);
 	game.win = game_win;
-	game.game_img = new_img(game_win.width, game_win.height, game_win);
+	game.game_img = new_img(get_map_w(game.map), get_map_h(game.map), game_win);
 	mlx_hook(game_win.win_ptr, KEY_RELEASE, KEY_RELEASE_MASK, &on_keypress,
 		&game);
 	mlx_hook(game_win.win_ptr, DESTROY_NOTIFY, STRUCT_NOTIFY_MASK, &on_destroy,

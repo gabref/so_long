@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/05 19:20:22 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:42:46 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,15 @@
 # include <stdio.h>
 
 # define WALL_PATH "wall.xpm"
-# define SIZE 32
+# define SPRITE_SIZE 32
+# define PADDING_Y 5
+# define PADDING_X 2
+# define TITLE "so_long - galves-f"
+
+# define get_win_h(g) (SPRITE_SIZE * (g.map->rows + PADDING_Y))
+# define get_win_w(g) (SPRITE_SIZE * (g.map->cols + PADDING_X))
+# define get_map_h(map) (SPRITE_SIZE * map->rows)
+# define get_map_w(map) (SPRITE_SIZE * map->cols)
 
 typedef struct s_win
 {
