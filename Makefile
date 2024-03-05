@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/03/03 23:50:06 by galves-f         ###   ########.fr        #
+#    Updated: 2024/03/05 18:34:02 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRCS_PATH		= src
 
 INCLUDE_PATH	= inc
 
-SRCS			= check_args.c game.c
+SRCS			= check_args.c game.c utils_window.c utils_image.c
 MAIN			= main.c
 
 LIBS_DIR 		= libs

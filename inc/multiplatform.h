@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:24:48 by galves-f          #+#    #+#             */
-/*   Updated: 2024/02/14 11:35:54 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:15:30 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 /* keys definitions */
 #  define KEY_ESCAPE XK_Escape
 
+#  define destroy_window(w) destroy_window_linux(w)
+
 # elif __APPLE__
 
 #  include "../libs/mlx_mac/mlx.h"
@@ -36,6 +38,8 @@
 #  define STRUCT_NOTIFY_MASK 1L << 17
 
 #  define KEY_ESCAPE 53
+
+#  define destroy_window(w) destroy_window_mac(w)
 
 # endif
 

@@ -2,10 +2,9 @@
 
 int	main(int ac, char **av)
 {
-	t_map *map = check_args(ac, av);
-	t_game *game = game_init(map);
-	(void)game;
-	// game_loop(&game);
-	// game_exit(&game);
+	t_map	*map;
+
+	map = check_args(ac, av);
+	game_init(map);
 	return (0);
 }
