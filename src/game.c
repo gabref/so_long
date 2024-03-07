@@ -6,11 +6,23 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:48:08 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/05 19:41:40 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/08 00:06:55 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
+
+void get_assets(t_game *g)
+{
+	g->static_assets.wall = new_file_img(WALL_PATH, g->win);
+	g->static_assets.floor = new_file_img(FLOOR_PATH, g->win);
+}
+
+void destroy_assets(t_game *g)
+{
+	destroy_image(g->static_assets.wall);
+	destroy_image(g->static_assets.floor);
+}
 
 int	on_destroy(t_game *game)
 {
@@ -18,6 +30,7 @@ int	on_destroy(t_game *game)
 		exit(EXIT_FAILURE);
 	ft_putstr_fd("Exiting game\n", 1);
 	free_map(game->map);
+	destroy_assets(game);
 	destroy_image(game->game_img);
 	destroy_window(game->win);
 	exit(0);
@@ -35,33 +48,51 @@ int	on_keypress(int keysym, t_game *g)
 	return (0);
 }
 
-void	draw_map(t_game *g)
+int get_px(int x, t_game *g)
 {
-	int		px;
-	int		py;
-	t_img	img;
+	if (x < 0 || x >= g->map->cols)
+		return (-1);
+	return (x * SPRITE_SIZE);
+}
+
+int get_py(int y, t_game *g)
+{
+	if (y < 0 || y >= g->map->rows)
+		return (-1);
+	return (y * SPRITE_SIZE);
+}
+
+void render_map(t_game *g)
+{
 	int		x;
 	int		y;
 
-	img = new_file_img(WALL_PATH, g->win);
-	px = 1;
-	py = 1;
-	while (px < g->map->cols * img.w)
+	x = 0;
+	while (x < g->map->cols)
 	{
-		while (py < g->map->rows * img.h)
+		y = 0;
+		while (y < g->map->rows)
 		{
-			put_img_to_img(g->game_img, img, px, py);
-			py += img.h;
+			if (g->map->map[y][x] == '1')
+				put_img_to_img(g->game_img, g->static_assets.wall, get_px(x, g), get_py(y, g));
+			else
+				put_img_to_img(g->game_img, g->static_assets.floor, get_px(x, g), get_py(y, g));
+			y++;
 		}
-		px += img.w;
-		py = 0;
+		x++;
 	}
-	put_img_to_img(g->game_img, img, px, py);
+}
+
+void	render_game(t_game *g)
+{
+	int		x;
+	int		y;
+
+	render_map(g);
 	x = (g->win.width - g->game_img.w) / 2;
 	y = SPRITE_SIZE;
 	mlx_put_image_to_window(g->game_img.win.mlx_ptr, g->game_img.win.win_ptr,
 		g->game_img.img_ptr, x, y);
-	destroy_image(img);
 }
 
 void	game_init(t_map *map)
@@ -74,10 +105,11 @@ void	game_init(t_map *map)
 	ft_putstr_fd("Game initialized\n", 1);
 	game.win = game_win;
 	game.game_img = new_img(get_map_w(game.map), get_map_h(game.map), game_win);
+	get_assets(&game);
 	mlx_hook(game_win.win_ptr, KEY_RELEASE, KEY_RELEASE_MASK, &on_keypress,
 		&game);
 	mlx_hook(game_win.win_ptr, DESTROY_NOTIFY, STRUCT_NOTIFY_MASK, &on_destroy,
 		&game);
-	draw_map(&game);
+	render_game(&game);
 	mlx_loop(game_win.mlx_ptr);
 }

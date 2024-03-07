@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/05 19:42:46 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/07 23:52:38 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include "multiplatform.h"
 # include <stdio.h>
 
-# define WALL_PATH "wall.xpm"
+# define WALL_PATH "assets/wall.xpm"
+# define FLOOR_PATH "assets/black.xpm"
 # define SPRITE_SIZE 32
 # define PADDING_Y 5
 # define PADDING_X 2
@@ -30,65 +31,72 @@
 
 typedef struct s_win
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-	int			width;
-	int			height;
-}				t_win;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	int				width;
+	int				height;
+}					t_win;
 
 typedef struct s_img
 {
-	t_win		win;
-	void		*img_ptr;
-	char		*addr;
-	int			h;
-	int			w;
-	int			bpp;
-	int			endian;
-	int			line_len;
-}				t_img;
+	t_win			win;
+	void			*img_ptr;
+	char			*addr;
+	int				h;
+	int				w;
+	int				bpp;
+	int				endian;
+	int				line_len;
+}					t_img;
 
 typedef struct counts
 {
-	int			exit;
-	int			wall;
-	int			empty;
-	int			player;
-	int			enemies;
-	int			collectibles;
-}				t_counts;
+	int				exit;
+	int				wall;
+	int				empty;
+	int				player;
+	int				enemies;
+	int				collectibles;
+}					t_counts;
 
 typedef struct s_map
 {
-	char		**map;
-	int			rows;
-	int			cols;
-	t_counts	counts;
-}				t_map;
+	char			**map;
+	int				rows;
+	int				cols;
+	t_counts		counts;
+}					t_map;
+
+typedef struct s_static_assets
+{
+	t_img			wall;
+	t_img			floor;
+}					t_static_assets;
 
 typedef struct s_game
 {
-	t_map		*map;
-	t_win		win;
-	t_img		game_img;
-}				t_game;
+	t_map			*map;
+	t_win			win;
+	t_img			game_img;
+	t_static_assets	static_assets;
+}					t_game;
 
-int				on_destroy(t_game *game);
-int				on_keypress(int keysym, t_game *g);
+int					on_destroy(t_game *game);
+int					on_keypress(int keysym, t_game *g);
 
-t_map			*check_args(int ac, char **av);
-void			game_init(t_map *map);
+t_map				*check_args(int ac, char **av);
+void				game_init(t_map *map);
 
-void			free_map(t_map *map);
+void				free_map(t_map *map);
 
-t_win			new_window(int w, int h, char *str);
-void			destroy_window_linux(t_win w);
-void			destroy_window_mac(t_win w);
-t_img			new_file_img(char *path, t_win window);
-t_img			new_img(int w, int h, t_win window);
-unsigned int	get_pixel_img(t_img img, int x, int y);
-void			put_pixel_img(t_img img, int x, int y, int color);
-void			put_img_to_img(t_img dst, t_img src, int x, int y);
-void			destroy_image(t_img img);
+t_win				new_window(int w, int h, char *str);
+void				destroy_window_linux(t_win w);
+void				destroy_window_mac(t_win w);
+t_img				new_file_img(char *path, t_win window);
+t_img				new_img(int w, int h, t_win window);
+unsigned int		get_pixel_img(t_img img, int x, int y);
+void				put_pixel_img(t_img img, int x, int y, int color);
+void				put_img_to_img(t_img dst, t_img src, int x, int y);
+void				destroy_image(t_img img);
 
 #endif
