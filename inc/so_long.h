@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/12 14:24:24 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/13 00:42:03 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define EXIT_PORTAL_PATH "assets/exit.xpm"
 
 # define SPRITE_SIZE 32
-# define P_PAD 2
+# define P_PAD 10
 # define PADDING_Y 5
 # define PADDING_X 2
 # define TITLE "so_long - galves-f"
@@ -84,8 +84,8 @@ typedef struct s_static_assets
 // ============================================================================
 typedef enum e_entity
 {
-	PLAYER,
 	ENEMY,
+	PLAYER,
 	COLLECTIBLE,
 	EXIT_PORTAL,
 	EVENT,

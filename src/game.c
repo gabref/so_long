@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:48:08 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/12 15:04:25 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/13 00:47:47 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_py(int y, t_game *g)
 	return (y * SPRITE_SIZE);
 }
 
-t_animation	*new_animation(char *name, char *path, t_win win)
+t_animation	*new_animation_player(char *name, char *path, t_win win)
 {
 	t_list		*frames;
 	t_img		*frame1;
@@ -53,9 +53,10 @@ t_animation	*new_animation(char *name, char *path, t_win win)
 	t_img		*frame4;
 	t_animation	*a;
 
-	printf("Creating new animation\n");
+	// printf("Creating new animation\n");
 	frames = NULL;
 
+	(void)path;
 	frame1 = malloc(sizeof(t_img));
 	if (!frame1)
 		return (NULL);
@@ -101,7 +102,124 @@ t_animation	*new_animation(char *name, char *path, t_win win)
 	a->delay = 8;
 	a->_tmp_delay = 0;
 	a->current_frame_num = 0;
-	printf("Animation created\n");
+	// printf("Animation created\n");
+	return (a);
+}
+
+t_animation	*new_animation_collectible(char *name, char *path, t_win win)
+{
+	t_list		*frames;
+	t_img		*frame1;
+	t_img		*frame2;
+	t_animation	*a;
+
+	// printf("Creating new animation\n");
+	frames = NULL;
+
+	(void)path;
+	frame1 = malloc(sizeof(t_img));
+	if (!frame1)
+		return (NULL);
+	frame2 = malloc(sizeof(t_img));
+	if (!frame2)
+		return (NULL);
+
+	*frame1 = new_file_img("./assets/pacdot_powerup.xpm", win);
+	if (!frames)
+		frames = ft_lstnew(frame1);
+	else
+		ft_lstadd_back(&frames, ft_lstnew(frame1));
+
+	*frame2 = new_file_img("./assets/pacdot_food.xpm", win);
+	if (!frames)
+		frames = ft_lstnew(frame2);
+	else
+		ft_lstadd_back(&frames, ft_lstnew(frame2));
+
+	a = (t_animation *)malloc(sizeof(t_animation));
+	if (!a)
+		return (NULL);
+	a->name = ft_strdup(name);
+	a->frames = frames;
+	a->delay = 64;
+	a->_tmp_delay = 0;
+	a->current_frame_num = 0;
+	// printf("Animation created\n");
+	return (a);
+}
+
+t_animation	*new_animation_enemy(char *name, char *path, t_win win)
+{
+	t_list		*frames;
+	t_img		*frame1;
+	t_img		*frame2;
+	t_animation	*a;
+
+	// printf("Creating new animation\n");
+	frames = NULL;
+
+	(void)path;
+	frame1 = malloc(sizeof(t_img));
+	if (!frame1)
+		return (NULL);
+	frame2 = malloc(sizeof(t_img));
+	if (!frame2)
+		return (NULL);
+
+	(void)path;
+	*frame1 = new_file_img("./assets/ghost_left1.xpm", win);
+	if (!frames)
+		frames = ft_lstnew(frame1);
+	else
+		ft_lstadd_back(&frames, ft_lstnew(frame1));
+
+	*frame2 = new_file_img("./assets/ghost_left2.xpm", win);
+	if (!frames)
+		frames = ft_lstnew(frame2);
+	else
+		ft_lstadd_back(&frames, ft_lstnew(frame2));
+
+	a = (t_animation *)malloc(sizeof(t_animation));
+	if (!a)
+		return (NULL);
+	a->name = ft_strdup(name);
+	a->frames = frames;
+	a->delay = 8;
+	a->_tmp_delay = 0;
+	a->current_frame_num = 0;
+	// printf("Animation created\n");
+	return (a);
+}
+
+t_animation	*new_animation_exit_portal(char *name, char *path, t_win win)
+{
+	t_list		*frames;
+	t_img		*frame1;
+	t_animation	*a;
+
+	// printf("Creating new animation\n");
+	frames = NULL;
+
+	(void)path;
+	frame1 = malloc(sizeof(t_img));
+	if (!frame1)
+		return (NULL);
+
+	*frame1 = new_file_img("./assets/portal.xpm", win);
+	if (!frames)
+		frames = ft_lstnew(frame1);
+	else
+		ft_lstadd_back(&frames, ft_lstnew(frame1));
+
+	a = (t_animation *)malloc(sizeof(t_animation));
+	if (!a)
+		return (NULL);
+	a->name = ft_strdup(name);
+	a->frames = frames;
+	a->delay = 100;
+	a->_tmp_delay = 0;
+	a->current_frame_num = 0;
+	// printf("Animation created\n");
 	return (a);
 }
 
@@ -109,21 +227,28 @@ t_ent	*new_ent(t_entity type, char *path, t_win win, int x, int y)
 {
 	t_ent	*ent;
 
-	printf("Creating new entity\n");
+	// printf("Creating new entity\n");
 	ent = (t_ent *)malloc(sizeof(t_ent));
 	if (!ent)
 		return (NULL);
 	if (type == PLAYER)
 	{
 		// ent->animation[PLAYER_IDLE] = new_animation("player", path, win);
-		ent->animations = ft_lstnew(new_animation("player", path, win));
+		ent->animations = ft_lstnew(new_animation_player("player", path, win));
 		// ent->img = new_file_img(path, win);
-		printf("Animation created\n");
-	}
+		printf("\n========\nplayer Animation created: %d %d\n\n", x, y);
+	} else if (type == ENEMY)
+		ent->animations = ft_lstnew(new_animation_enemy("enemy", path, win));
+	else if (type == COLLECTIBLE)
+		ent->animations = ft_lstnew(new_animation_collectible("collectible", path, win));
+	else if (type == EXIT_PORTAL)
+		ent->animations = ft_lstnew(new_animation_exit_portal("exit_portal", path, win));
+	else
+		return (NULL);
 	ent->x = x * SPRITE_SIZE;
 	ent->y = y * SPRITE_SIZE;
 	ent->type = type;
-	printf("Entity created\n");
+	// printf("Entity created\n");
 	return (ent);
 }
 
@@ -153,12 +278,12 @@ void	get_assets(t_game *g)
 		{
 			if (g->map->map[y][x] == 'P')
 				add_ent(PLAYER, PLAYER_PATH, g, x, y);
-			// else if (g->map->map[y][x] == 'I')
-			// 	add_ent(ENEMY, ENEMY_PATH, g, x, y);
-			// else if (g->map->map[y][x] == 'C')
-			// 	add_ent(COLLECTIBLE, COLLECTIBLE_PATH, g, x, y);
-			// else if (g->map->map[y][x] == 'E')
-			// 	add_ent(EXIT_PORTAL, EXIT_PORTAL_PATH, g, x, y);
+			else if (g->map->map[y][x] == 'I')
+				add_ent(ENEMY, ENEMY_PATH, g, x, y);
+			else if (g->map->map[y][x] == 'C')
+				add_ent(COLLECTIBLE, COLLECTIBLE_PATH, g, x, y);
+			else if (g->map->map[y][x] == 'E')
+				add_ent(EXIT_PORTAL, EXIT_PORTAL_PATH, g, x, y);
 			y++;
 		}
 		x++;
@@ -238,7 +363,10 @@ void	update_player(t_actions *a, t_game *g)
 	{
 		ent_ptr = (t_ent *)ent->content;
 		if (ent_ptr->type != PLAYER)
+		{
 			ent = ent->next;
+			continue ;
+		}
 		move_player(ent_ptr, g, a);
 		return ;
 	}
@@ -248,7 +376,6 @@ void	update_animation_(t_animation *a, t_ent *ent, t_img game_img)
 {
 	t_img	*img;
 
-	printf("update_animation: Updating animation\n");
 	if (!a || !ent)
 		return ;
 	if (a->_tmp_delay++ == a->delay)
@@ -257,33 +384,31 @@ void	update_animation_(t_animation *a, t_ent *ent, t_img game_img)
 		a->current_frame_num++;
 		a->current_frame_num %= ft_lstsize(a->frames);
 	}
-	printf("update_animation: Current frame: %d\n", a->current_frame_num);
+	// printf("update_animation: Current frame: %d\n", a->current_frame_num);
 	img = (t_img *)ft_lstget(a->frames, a->current_frame_num)->content;
 	put_img_to_img(game_img, *img, ent->x, ent->y);
-	printf("update_animation: Animation updated %s\n", a->name);
+	// printf("update_animation: Animation updated %s\n", a->name);
 }
 
 void	render_entities(t_game *g)
 {
 	t_list		*ent;
 	t_ent		*ent_ptr;
-	int			i;
 	t_animation	*anim;
 
 	update_player(&g->cur_actions, g);
 	ent = g->ents;
-	i = 0;
 	while (ent != NULL)
 	{
-		printf("Entity %d\n", i++);
+		// printf("Entity %d\n", i++);
 		ent_ptr = (t_ent *)ent->content;
 		anim = (t_animation *)ft_lstget(ent_ptr->animations, 0)->content;
 		update_animation_(anim, ent_ptr, g->game_img);
 		// put_img_to_img(g->game_img, ent_ptr->img, ent_ptr->x, ent_ptr->y);
-		printf("going t	next entity\n");
+		// printf("going t	next entity\n");
 		ent = ent->next;
 	}
-	printf("Entities updated\n");
+	// printf("Entities updated\n");
 }
 
 void	destroy_entity(void *ptr)
@@ -294,8 +419,10 @@ void	destroy_entity(void *ptr)
 	if (!ent)
 		return ;
 	// destroy_animation_noptr(ent->animation[PLAYER_IDLE]);
-	destroy_animation(ft_lstget(ent->animations, 0));
+	// destroy_animation(ft_lstget(ent->animations, 0)->content);
 	// destroy_image(ent->img);
+	ft_lstiter(ent->animations, &destroy_animation);
+	ft_lstclear(&ent->animations, &free);
 }
 
 void	destroy_assets(t_game *g)
