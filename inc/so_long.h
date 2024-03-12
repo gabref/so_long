@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/11 18:48:28 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:24:24 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,19 @@ typedef struct s_ent
 	int				x;
 	int				y;
 	t_img			img;
-	t_animation		*animation[7];
+	t_list			*animations;
 	t_entity		type;
 }					t_ent;
 
 void				destroy_animation(void *ptr);
-void   destroy_animation_noptr(t_animation anim);
+void				destroy_animation_noptr(t_animation anim);
 // ============================================================================
 
-typedef struct s_point {
-	int x;
-	int y;
-} t_point;
+typedef struct s_point
+{
+	int				x;
+	int				y;
+}					t_point;
 
 typedef struct s_actions
 {
