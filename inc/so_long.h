@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/13 00:42:03 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/14 08:08:41 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define SO_LONG_H
 
 # include "../libs/libft/inc/libft.h"
+# include "../libs/ft_printf/inc/ft_printf.h"
 # include "multiplatform.h"
 # include <stdint.h>
-# include <stdio.h>
 
 # define WALL_PATH "assets/wall.xpm"
 # define FLOOR_PATH "assets/black.xpm"
@@ -123,6 +123,8 @@ typedef struct s_ent
 {
 	int				x;
 	int				y;
+	int 			score;
+	int 			health;
 	t_img			img;
 	t_list			*animations;
 	t_entity		type;

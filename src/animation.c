@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 22:03:09 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/11 17:56:00 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:51:46 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@ static void	destroy_image_helper(void *ptr)
 	img = (t_img *)ptr;
 	if (img)
 		destroy_image(*img);
-}
-
-void   destroy_animation_noptr(t_animation anim)
-{
-
-	ft_lstiter(anim.frames, &destroy_image_helper);
-	ft_lstclear(&anim.frames, &free);
-	free(anim.name);
 }
 
 void   destroy_animation(void *ptr)

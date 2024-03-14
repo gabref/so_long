@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/03/11 18:03:18 by galves-f         ###   ########.fr        #
+#    Updated: 2024/03/14 08:16:51 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ MAIN			= main.c
 
 LIBS_DIR 		= libs
 LIBFT_DIR 		= $(LIBS_DIR)/libft
+PRINTF_DIR 		= $(LIBS_DIR)/ft_printf
 MLX_DIR_LIN 	= $(LIBS_DIR)/mlx_linux
 MLX_DIR_MAC 	= $(LIBS_DIR)/mlx_mac
 
@@ -147,8 +148,9 @@ endif
 
 $(NAME):	install_libs ${OBJS} ${OBJ_MAIN}
 			@make all -C $(LIBFT_DIR)
+			@make all -C $(PRINTF_DIR)
 			@$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN} \
-			-L$(LIBFT_DIR) -lft $(MLX_FLAGS)
+			-L$(LIBFT_DIR) -L$(PRINTF_DIR) -lft -lftprintf $(MLX_FLAGS)
 
 objs/%.o: 	$(SRCS_PATH)/%$(FILE_EXTENSION)
 			@mkdir -p $(dir $@)
@@ -159,11 +161,13 @@ objs/%.o: 	$(SRCS_PATH)/%$(FILE_EXTENSION)
 clean:		header
 			@rm -rf objs objs_tests
 			@make clean -C $(LIBFT_DIR)
+			@make clean -C $(PRINTF_DIR)
 			@printf "%-53b%b" "$(COM_COLOR)clean:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean:		header clean
 			@rm -rf $(NAME)
 			@make fclean -C $(LIBFT_DIR)
+			@make fclean -C $(PRINTF_DIR)
 			@printf "%-53b%b" "$(COM_COLOR)fclean:" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re:	fclean 
@@ -176,6 +180,7 @@ norminette:
 install_libs: $(LIBS_DIR)
 	@$(MAKE) $(LIBFT_DIR)
 	@$(MAKE) $(MLX_DIR)
+	@$(MAKE) $(PRINTF_DIR)
 
 $(LIBS_DIR):
 	@mkdir -p $(LIBS_DIR)
@@ -187,5 +192,7 @@ $(MLX_DIR):
 	@git clone $(MLX_URL) $(MLX_DIR)
 	@make -C $(MLX_DIR)
 
+$(PRINTF_DIR):
+	@git clone https://github.com/gabref/printf.git $(PRINTF_DIR)
 
 .PHONY:		all clean fclean re header norminette
