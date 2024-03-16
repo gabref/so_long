@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:48:08 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/14 10:03:06 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/16 16:09:48 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ void	get_assets(t_game *g)
 
 	g->static_assets.wall = new_file_img(WALL_PATH, g->win);
 	g->static_assets.floor = new_file_img(FLOOR_PATH, g->win);
+	load_score_font(g);
 	x = 0;
 	while (x < g->map->cols)
 	{
@@ -286,7 +287,6 @@ void	check_entities_collision(t_ent *player, t_game *g)
 	t_list	*tmp;
 
 	ents = g->ents;
-	int i = 0;
 	while (ents)
 	{
 		entity = (t_ent *)ents->content;
@@ -300,7 +300,6 @@ void	check_entities_collision(t_ent *player, t_game *g)
 		ents = ents->next;
 		if (entity->type == COLLECTIBLE)
 		{
-			ft_printf("Collectible %d\n", i);
 			player->score += entity->score;
 			ft_lstremove_del(&g->ents, tmp, &destroy_entity);
 			free(entity);
@@ -316,7 +315,6 @@ void	check_entities_collision(t_ent *player, t_game *g)
 			if (player->health <= 0)
 				on_destroy_message("Game over\n", g);
 		}
-		i++;
 	}
 }
 
@@ -364,7 +362,6 @@ void	move_player(t_ent *ent, t_game *g, t_actions *a)
 {
 	t_point		curr_point;
 	t_point		next_point;
-	static int	movements = 0;
 
 	curr_point = (t_point){ent->x, ent->y};
 	next_point = (t_point){ent->x, ent->y};
@@ -378,11 +375,12 @@ void	move_player(t_ent *ent, t_game *g, t_actions *a)
 		next_point.x += PLAYER_SPEED;
 	if (next_point.x == curr_point.x && next_point.y == curr_point.y)
 		return ;
-	ft_printf("Movements: %d\n", movements++);
 	if (!check_collision_x(curr_point, next_point, '1', g))
 		ent->x = next_point.x;
 	if (!check_collision_y(curr_point, next_point, '1', g))
 		ent->y = next_point.y;
+	// check new movement
+	g->moves++;
 }
 
 void	update_player(t_actions *a, t_game *g)
@@ -452,6 +450,7 @@ void	destroy_assets(t_game *g)
 {
 	destroy_image(g->static_assets.wall);
 	destroy_image(g->static_assets.floor);
+	free_fonts(g);
 	if (!g->ents)
 		return ;
 	ft_lstiter(g->ents, &destroy_entity);
@@ -537,6 +536,7 @@ int	render_game(t_game *g)
 	g->updated_at = timestamp_in_ms(g);
 	render_map(g);
 	render_entities(g);
+	update_score(g);
 	x = (g->win.width - g->game_img.w) / 2;
 	y = SPRITE_SIZE;
 	mlx_put_image_to_window(g->game_img.win.mlx_ptr, g->game_img.win.win_ptr,
@@ -549,6 +549,7 @@ void	game_init(t_map *map)
 	t_win	game_win;
 	t_game	game;
 
+	game.moves = 0;
 	game.ents = NULL;
 	game.cur_actions = (t_actions){0, 0, 0, 0, 0};
 	game.map = map;
@@ -559,6 +560,7 @@ void	game_init(t_map *map)
 	ft_printf("Game initialized\n");
 	game.win = game_win;
 	game.game_img = new_img(get_map_w(game.map), get_map_h(game.map), game_win);
+	game.score_img = new_img(100, 100, game_win);
 	get_assets(&game);
 	mlx_hook(game_win.win_ptr, KEY_PRESS, KEY_PRESS_MASK, &on_keypress, &game);
 	mlx_hook(game_win.win_ptr, KEY_RELEASE, KEY_RELEASE_MASK, &on_keyrelease,

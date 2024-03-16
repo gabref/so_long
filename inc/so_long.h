@@ -6,15 +6,15 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/14 08:08:41 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/16 16:09:24 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include "../libs/libft/inc/libft.h"
 # include "../libs/ft_printf/inc/ft_printf.h"
+# include "../libs/libft/inc/libft.h"
 # include "multiplatform.h"
 # include <stdint.h>
 
@@ -123,8 +123,8 @@ typedef struct s_ent
 {
 	int				x;
 	int				y;
-	int 			score;
-	int 			health;
+	int				score;
+	int				health;
 	t_img			img;
 	t_list			*animations;
 	t_entity		type;
@@ -133,6 +133,22 @@ typedef struct s_ent
 void				destroy_animation(void *ptr);
 void				destroy_animation_noptr(t_animation anim);
 // ============================================================================
+
+/* Struct to store the sprites for every digit */
+typedef struct s_font
+{
+	t_img			zero;
+	t_img			one;
+	t_img			two;
+	t_img			three;
+	t_img			four;
+	t_img			five;
+	t_img			six;
+	t_img			seven;
+	t_img			eight;
+	t_img			nine;
+	t_img			black;
+}					t_font;
 
 typedef struct s_point
 {
@@ -153,13 +169,16 @@ typedef struct s_game
 {
 	uint64_t		created_at;
 	uint64_t		updated_at;
+	int				moves;
 	int				fps;
 	t_map			*map;
 	t_win			win;
 	t_img			game_img;
+	t_img			score_img;
 	t_list			*ents;
 	t_actions		cur_actions;
 	t_static_assets	static_assets;
+	t_font			score_font;
 }					t_game;
 
 int					on_destroy(t_game *game);
@@ -179,5 +198,9 @@ unsigned int		get_pixel_img(t_img img, int x, int y);
 void				put_pixel_img(t_img img, int x, int y, int color);
 void				put_img_to_img(t_img dst, t_img src, int x, int y);
 void				destroy_image(t_img img);
+
+void				update_score(t_game *g);
+t_font				load_score_font(t_game *g);
+void				free_fonts(t_game *g);
 
 #endif
