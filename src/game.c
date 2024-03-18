@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:48:08 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 01:01:45 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 01:13:16 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,7 +381,7 @@ int change_direction(t_point cp, t_point np, t_game *g)
 		dir = UP_LEFT;
 	else if (np.x > cp.x && np.y > cp.y)
 		dir = UP_RIGHT;
-	if (dir != g->cur_dir && dir != STOPED || dir != g->cur_dir && g->cur_dir == STOPED)
+	if (dir != g->cur_dir && (dir != STOPED || g->cur_dir == STOPED))
 	{
 		g->cur_dir = dir;
 		return (1);
@@ -405,8 +405,6 @@ void	move_player(t_ent *ent, t_game *g, t_actions *a)
 		next_point.x -= PLAYER_SPEED;
 	if (a->right)
 		next_point.x += PLAYER_SPEED;
-	if (next_point.x == curr_point.x && next_point.y == curr_point.y)
-		return ;
 	if (!check_collision_x(curr_point, next_point, '1', g))
 		ent->x = next_point.x;
 	if (!check_collision_y(curr_point, next_point, '1', g))
@@ -493,10 +491,12 @@ int	on_destroy(t_game *game)
 {
 	if (!game)
 		exit(EXIT_FAILURE);
+	ft_printf("Total moves: %d\n\n", game->moves);
 	ft_printf("Exiting game\n");
 	free_map(game->map);
 	destroy_assets(game);
 	destroy_image(game->game_img);
+	destroy_image(game->score_img);
 	destroy_window(game->win);
 	exit(0);
 }

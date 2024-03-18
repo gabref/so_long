@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 01:36:02 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/04 01:51:08 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 01:13:54 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,6 @@ static char	*read_map(char *file)
 	}
 	close(fd);
 	return (map);
-}
-
-void	print_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	while (map->map[i])
-	{
-		printf("%s\n", map->map[i]);
-		i++;
-	}
 }
 
 void	free_map(t_map *map)
@@ -85,7 +73,6 @@ t_map	*check_args(int ac, char **av)
 	// read the map file
 	// check if the file exists
 	map_inline = read_map(av[1]);
-	printf("%s", map_inline);
 	map = malloc(sizeof(t_map));
 	if (!map)
 	{
@@ -94,7 +81,6 @@ t_map	*check_args(int ac, char **av)
 		exit(1);
 	}
 	map->map = ft_split_word(map_inline, "\n");
-	printf("split\n");
 	free(map_inline);
 	if (!map->map)
 	{
@@ -104,7 +90,6 @@ t_map	*check_args(int ac, char **av)
 	}
 	// check if the map is valid
 	// check if the map is not empty
-	printf("check map emtpy\n");
 	if (map->map[0] == NULL)
 	{
 		ft_putstr_fd("Error\nEmpty map\n", 2);
@@ -112,7 +97,6 @@ t_map	*check_args(int ac, char **av)
 		free(map);
 		exit(1);
 	}
-	printf("check map not rectangular\n");
 	if (map->map[1] == NULL)
 		free_map_and_exit(map, "Error\nMap is not rectangular\n");
 	// check if the map is rectangular
