@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:59:48 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:06:26 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:18:59 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,27 @@ void	render_entities(t_game *g)
 	}
 }
 
+void	collision_action(t_ent *ent_cont, t_list *t, t_ent *player, t_game *g)
+{
+	if (ent_cont->type == COLLECTIBLE)
+	{
+		player->score += ent_cont->score;
+		ft_lstremove_del(&g->ents, t, &destroy_entity);
+		free(ent_cont);
+	}
+	else if (ent_cont->type == EXIT_PORTAL)
+	{
+		if (player->score == g->map->counts.collectibles)
+			on_destroy_message("You won, congratsss\n", g);
+	}
+	else if (ent_cont->type == ENEMY)
+	{
+		player->health -= ent_cont->health;
+		if (player->health <= 0)
+			on_destroy_message("Game over\n", g);
+	}
+}
+
 void	check_entities_collision(t_ent *player, t_game *g)
 {
 	t_list	*ents;
@@ -68,77 +89,6 @@ void	check_entities_collision(t_ent *player, t_game *g)
 		}
 		tmp = ents;
 		ents = ents->next;
-		if (entity->type == COLLECTIBLE)
-		{
-			player->score += entity->score;
-			ft_lstremove_del(&g->ents, tmp, &destroy_entity);
-			free(entity);
-		}
-		else if (entity->type == EXIT_PORTAL)
-		{
-			if (player->score == g->map->counts.collectibles)
-				on_destroy_message("You won, congratsss\n", g);
-		}
-		else if (entity->type == ENEMY)
-		{
-			player->health -= entity->health;
-			if (player->health <= 0)
-				on_destroy_message("Game over\n", g);
-		}
+		collision_action(entity, tmp, player, g);
 	}
-}
-
-t_ent	*new_ent(t_entity type, char *path, t_win win, int x, int y)
-{
-	t_ent	*ent;
-
-	ent = (t_ent *)malloc(sizeof(t_ent));
-	if (!ent)
-		return (NULL);
-	if (type == PLAYER)
-	{
-		ent->animations = ft_lstnew(new_animation_player("player", path, win));
-		ent->score = 0;
-		ent->health = 100;
-	}
-	else if (type == ENEMY)
-	{
-		ent->animations = ft_lstnew(new_animation_enemy("enemy", path, win));
-		ent->score = 0;
-		ent->health = 100;
-	}
-	else if (type == COLLECTIBLE)
-	{
-		ent->animations = ft_lstnew(new_animation_collectible("collectible",
-					path, win));
-		ent->score = 1;
-		ent->health = 0;
-	}
-	else if (type == EXIT_PORTAL)
-		ent->animations = ft_lstnew(new_animation_exit_portal("exit_portal",
-					path, win));
-	else
-	{
-		free(ent);
-		return (NULL);
-	}
-	ent->x = x * SPRITE_SIZE;
-	ent->y = y * SPRITE_SIZE;
-	ent->type = type;
-	return (ent);
-}
-
-void	add_ent(t_entity entity, char *path, t_game *g, int x, int y)
-{
-	t_ent	*ent;
-
-	ent = new_ent(entity, path, g->win, x, y);
-	if (!ent)
-		return ;
-	if (!g->ents)
-		g->ents = ft_lstnew(ent);
-	else if (entity == EXIT_PORTAL)
-		ft_lstadd_front(&g->ents, ft_lstnew(ent));
-	else
-		ft_lstadd_back(&g->ents, ft_lstnew(ent));
 }

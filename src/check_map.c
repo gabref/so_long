@@ -6,11 +6,11 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:45:53 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 16:03:49 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:30:33 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/map.h"
+#include "../inc/map.h"
 
 void	check_map_walls(t_map *map)
 {
@@ -26,10 +26,10 @@ void	check_map_walls(t_map *map)
 			while (map->map[i][j])
 				if (map->map[i][j++] != '1')
 					free_map_and_exit(map,
-						"Error\nMap is not surrounded by walls\nChecked the first and last line");
+						"Error\nMap is not surrounded by walls\n");
 		}
 		if (map->map[i][0] != '1' || map->map[i][map->cols - 1] != '1')
-			free_map_and_exit(map, "Error\nMap is not surrounded by walls\nChecked middle lines");
+			free_map_and_exit(map, "Error\nMap is not surrounded by walls\n");
 		i++;
 	}
 }

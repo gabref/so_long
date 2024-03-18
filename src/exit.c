@@ -6,11 +6,11 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:09:04 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:44:28 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:41:06 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/so_long.h"
+#include "../inc/so_long.h"
 
 int	on_destroy(t_game *game)
 {
@@ -32,7 +32,7 @@ void	on_destroy_message(char *msg, t_game *g)
 	on_destroy(g);
 }
 
-void exit_error_message(char *msg)
+void	exit_error_message(char *msg)
 {
 	ft_putstr_fd(msg, 2);
 	exit(1);

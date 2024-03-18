@@ -6,11 +6,11 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:11:31 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:12:03 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:21:43 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/so_long.h"
+#include "../inc/so_long.h"
 
 int	get_px(int x, t_game *g)
 {

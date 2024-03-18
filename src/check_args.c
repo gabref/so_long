@@ -6,12 +6,12 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 01:36:02 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 16:04:59 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:22:36 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../inc/map.h"
 #include "../inc/so_long.h"
-# include "../inc/map.h"
 
 static char	*read_map(char *file)
 {

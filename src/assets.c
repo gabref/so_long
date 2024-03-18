@@ -6,11 +6,11 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:18:40 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:53:02 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:31:34 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/so_long.h"
+#include "../inc/so_long.h"
 
 void	get_assets(t_game *g)
 {
@@ -27,13 +27,13 @@ void	get_assets(t_game *g)
 		while (y < g->map->rows)
 		{
 			if (g->map->map[y][x] == 'P')
-				add_ent(PLAYER, PLAYER_PATH, g, x, y);
+				add_ent(PLAYER, g, x, y);
 			else if (g->map->map[y][x] == 'X')
-				add_ent(ENEMY, ENEMY_PATH, g, x, y);
+				add_ent(ENEMY, g, x, y);
 			else if (g->map->map[y][x] == 'C')
-				add_ent(COLLECTIBLE, COLLECTIBLE_PATH, g, x, y);
+				add_ent(COLLECTIBLE, g, x, y);
 			else if (g->map->map[y][x] == 'E')
-				add_ent(EXIT_PORTAL, EXIT_PORTAL_PATH, g, x, y);
+				add_ent(EXIT_PORTAL, g, x, y);
 			y++;
 		}
 		x++;

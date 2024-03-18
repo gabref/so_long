@@ -6,11 +6,11 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:12:52 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:13:39 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:22:46 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/so_long.h"
+#include "../inc/so_long.h"
 
 int	check_collision_y(t_point cp, t_point np, char c, t_game *g)
 {
@@ -52,6 +52,17 @@ int	check_collision_x(t_point cp, t_point np, char c, t_game *g)
 	return (0);
 }
 
+int	change_direction_util(t_direction dir, t_game *g)
+{
+	if (dir != g->cur_dir && (dir != STOPED || g->cur_dir == STOPED))
+	{
+		g->cur_dir = dir;
+		return (1);
+	}
+	g->cur_dir = dir;
+	return (0);
+}
+
 int	change_direction(t_point cp, t_point np, t_game *g)
 {
 	t_direction	dir;
@@ -75,11 +86,5 @@ int	change_direction(t_point cp, t_point np, t_game *g)
 		dir = UP_LEFT;
 	else if (np.x > cp.x && np.y > cp.y)
 		dir = UP_RIGHT;
-	if (dir != g->cur_dir && (dir != STOPED || g->cur_dir == STOPED))
-	{
-		g->cur_dir = dir;
-		return (1);
-	}
-	g->cur_dir = dir;
-	return (0);
+	return (change_direction_util(dir, g));
 }

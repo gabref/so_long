@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/03/18 15:56:39 by galves-f         ###   ########.fr        #
+#    Updated: 2024/03/18 17:53:18 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,13 +40,16 @@ SRCS 			= animation.c \
 					check_args.c \
 					collision.c \
 					entity.c \
+					entity_add.c \
 					exit.c \
 					game.c \
 					move.c \
 					render_map.c \
 					score.c \
 					utils.c \
+					utils_map.c \
 					utils_image.c \
+					utils_image_put.c \
 					utils_window.c
 
 MAIN			= main.c
@@ -104,6 +107,7 @@ ifeq ($(detected_OS),Darwin)
 	MLX_DIR = $(MLX_DIR_MAC)
 	INCLUDE_MLX = -I$(MLX_DIR)
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+	SRCS += utils_mac.c
 else ifeq ($(detected_OS),Linux)
 	RUN_CMD = script -q -e -c "$(1)" $@.log > /dev/null; \
 				RESULT=$$?; \
@@ -113,6 +117,7 @@ else ifeq ($(detected_OS),Linux)
 	MLX_DIR = $(MLX_DIR_LIN)
 	INCLUDE_MLX = -I/usr/include -I$(MLX_DIR)
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib/X11 -lXext -lX11
+	SRCS += utils_linux.c
 else
 	RUN_CMD = $(1) 2> $@.log; \
 				RESULT=$$?

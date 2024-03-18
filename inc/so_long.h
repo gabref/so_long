@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:50:26 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 18:04:10 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,18 @@
 
 # include "../libs/ft_printf/inc/ft_printf.h"
 # include "../libs/libft/inc/libft.h"
-# include "multiplatform.h"
 # include "map.h"
+# include "multiplatform.h"
 # include <stdint.h>
 
 # define WALL_PATH "assets/wall.xpm"
 # define FLOOR_PATH "assets/black.xpm"
-# define PLAYER_PATH "assets/pacman.xpm"
-# define COLLECTIBLE_PATH "assets/collectible.xpm"
-# define ENEMY_PATH "assets/enemy.xpm"
-# define EXIT_PORTAL_PATH "assets/exit.xpm"
 
-# define SPRITE_SIZE 32
-# define P_PAD 10
-# define PADDING_Y 5
-# define PADDING_X 2
+# define P_PAD 20
 # define TITLE "so_long - galves-f"
 # define PLAYER_SPEED 5
 # define ENEMY_SPEED 2
 # define ENEMY_DELAY_CHANGE_DIR 100
-
-# define get_win_h(map) (SPRITE_SIZE * (map->rows + PADDING_Y))
-# define get_win_w(map) (SPRITE_SIZE * (map->cols + PADDING_X))
-# define get_map_h(map) (SPRITE_SIZE * map->rows)
-# define get_map_w(map) (SPRITE_SIZE * map->cols)
 
 typedef struct s_win
 {
@@ -83,12 +71,12 @@ typedef struct s_animation
 	t_list			*frames;
 	int				width;
 	int				height;
-	int delay;             // How many fps it takes to change animation
-	int _tmp_delay;        // Delay Iterator
-	int current_frame_num; // Which frame is selected
+	int				delay;
+	int				_tmp_delay;
+	int				current_frame_num;
 	int				mirrored;
-	long int updated_at;  // When was the last update
-	long int frame_count; // The frame count
+	long int		updated_at;
+	long int		frame_count;
 	t_entity		entity;
 	char			*name;
 }					t_animation;
@@ -119,13 +107,11 @@ void				destroy_animation(void *ptr);
 void				destroy_animation_noptr(t_animation anim);
 void				update_animation(t_animation *a, t_ent *ent,
 						t_img game_img);
-t_animation			*new_animation_player(char *name, char *path, t_win win);
-t_animation			*new_animation_collectible(char *name, char *path,
-						t_win win);
-t_animation			*new_animation_exit_portal(char *name, char *path,
-						t_win win);
-t_animation			*new_animation_enemy(char *name, char *path, t_win win);
-// ============================================================================
+t_animation			*new_animation_player(char *name, t_win win);
+t_animation			*new_animation_collectible(char *name, t_win win);
+t_animation			*new_animation_exit_portal(char *name, t_win win);
+t_animation			*new_animation_enemy(char *name, t_win win);
+/* ========================================================================= */
 
 /* Struct to store the sprites for every digit */
 typedef struct s_font
@@ -197,6 +183,7 @@ void				game_init(t_map *map);
 void				free_map(t_map *map);
 
 t_win				new_window(int w, int h, char *str);
+void				destroy_window(t_win w);
 void				destroy_window_linux(t_win w);
 void				destroy_window_mac(t_win w);
 t_img				new_file_img(char *path, t_win window);
@@ -214,33 +201,35 @@ void				destroy_entity(void *ptr);
 void				render_entities(t_game *g);
 void				check_entities_collision(t_ent *player, t_game *g);
 
-void	move_enemy(t_ent *ent, t_game *g);
-void	move_player(t_ent *ent, t_game *g, t_actions *a);
-int	on_destroy(t_game *game);
-void	on_destroy_message(char *msg, t_game *g);
+void				move_enemy(t_ent *ent, t_game *g);
+void				move_player(t_ent *ent, t_game *g, t_actions *a);
+int					on_destroy(t_game *game);
+void				on_destroy_message(char *msg, t_game *g);
 
-void	render_map(t_game *g);
-int	get_px(int x, t_game *g);
-int	get_py(int x, t_game *g);
+void				render_map(t_game *g);
+int					get_px(int x, t_game *g);
+int					get_py(int x, t_game *g);
 
-int	check_collision_y(t_point cp, t_point np, char c, t_game *g);
-int	check_collision_x(t_point cp, t_point np, char c, t_game *g);
-int	change_direction(t_point cp, t_point np, t_game *g);
+int					check_collision_y(t_point cp, t_point np, char c,
+						t_game *g);
+int					check_collision_x(t_point cp, t_point np, char c,
+						t_game *g);
+int					change_direction(t_point cp, t_point np, t_game *g);
 
-unsigned int	rand_range(unsigned int min, unsigned int max);
-uint64_t	gettimeofday_ms(void);
-uint64_t	timestamp_in_ms(t_game *game);
+unsigned int		rand_range(unsigned int min, unsigned int max);
+uint64_t			gettimeofday_ms(void);
+uint64_t			timestamp_in_ms(t_game *game);
 
-void	update_player(t_actions *a, t_game *g);
+void				update_player(t_actions *a, t_game *g);
 
-void	get_assets(t_game *g);
-void	destroy_assets(t_game *g);
+void				get_assets(t_game *g);
+void				destroy_assets(t_game *g);
 
-void	add_ent(t_entity entity, char *path, t_game *g, int x, int y);
+void				add_ent(t_entity entity, t_game *g, int x, int y);
 
-void	free_map(t_map *map);
-t_map	*check_args(int ac, char **av);
+void				free_map(t_map *map);
+t_map				*check_args(int ac, char **av);
 
-void exit_error_message(char *msg);
+void				exit_error_message(char *msg);
 
 #endif

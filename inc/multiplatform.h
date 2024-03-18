@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:24:48 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/16 15:24:04 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:49:05 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@
 #  define KEY_A XK_a
 #  define KEY_S XK_s
 #  define KEY_D XK_d
-# define KEY_SPACE XK_space
+#  define KEY_SPACE XK_space
 
-#  define destroy_window(w) destroy_window_linux(w)
+/* #  define DESTROY_WINDOW(w) destroy_window_linux(w) */
 
 # elif __APPLE__
 
 #  include "../libs/mlx_mac/mlx.h"
 #  define KEY_RELEASE 3
-#  define KEY_RELEASE_MASK 1L << 1
+#  define KEY_RELEASE_MASK 0b0010
 #  define KEY_PRESS 2
-#  define KEY_PRESS_MASK 1L << 0
+#  define KEY_PRESS_MASK 0b0001
 #  define DESTROY_NOTIFY 17
-#  define STRUCT_NOTIFY_MASK 1L << 17
+#  define STRUCT_NOTIFY_MASK 0b100000000000000000000
 
 #  define KEY_ESCAPE 53
 #  define KEY_UP 126
@@ -61,7 +61,7 @@
 #  define KEY_D 2
 #  define KEY_SPACE 49
 
-#  define destroy_window(w) destroy_window_mac(w)
+/* #  define destroy_window(w) destroy_window_mac(w) */
 
 # endif
 

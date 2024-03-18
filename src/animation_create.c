@@ -6,37 +6,49 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:03:38 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/18 15:56:09 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:02:16 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/so_long.h"
+#include "../inc/so_long.h"
 
-t_animation	*new_animation_player(char *name, char *path, t_win win)
+t_list	*get_frames(char **paths, int path_size, t_win win)
+{
+	t_list	*frames;
+	t_img	*frame;
+	int		i;
+
+	i = 0;
+	frames = NULL;
+	while (i < path_size)
+	{
+		frame = malloc(sizeof(t_img));
+		if (!frame)
+			return (NULL);
+		*frame = new_file_img(paths[i], win);
+		if (!frames)
+			frames = ft_lstnew(frame);
+		else
+			ft_lstadd_back(&frames, ft_lstnew(frame));
+		i++;
+	}
+	return (frames);
+}
+
+t_animation	*new_animation_player(char *name, t_win win)
 {
 	t_list		*frames;
-	t_img		*frame1;
-	t_img		*frame2;
-	t_img		*frame3;
-	t_img		*frame4;
 	t_animation	*a;
+	char		**paths;
 
-	frames = NULL;
-	(void)path;
-	frame1 = malloc(sizeof(t_img));
-	frame2 = malloc(sizeof(t_img));
-	frame3 = malloc(sizeof(t_img));
-	frame4 = malloc(sizeof(t_img));
-	if (!frame1 || !frame2 || !frame3 || !frame4)
-		return (NULL);
-	*frame1 = new_file_img(path, win);
-	frames = ft_lstnew(frame1);
-	*frame2 = new_file_img("./assets/pac_semi_right.xpm", win);
-	ft_lstadd_back(&frames, ft_lstnew(frame2));
-	*frame3 = new_file_img("./assets/pac_closed.xpm", win);
-	ft_lstadd_back(&frames, ft_lstnew(frame3));
-	*frame4 = new_file_img("./assets/pac_semi_right.xpm", win);
-	ft_lstadd_back(&frames, ft_lstnew(frame4));
+	paths = ft_calloc(5, sizeof(char *));
+	paths[0] = ft_strdup("assets/pacman.xpm");
+	paths[1] = ft_strdup("assets/pac_semi_right.xpm");
+	paths[2] = ft_strdup("assets/pac_closed.xpm");
+	paths[3] = ft_strdup("assets/pac_semi_right.xpm");
+	paths[4] = NULL;
+	frames = get_frames(paths, 4, win);
+	ft_free_2d_array((void **)paths);
 	a = (t_animation *)malloc(sizeof(t_animation));
 	if (!a)
 		return (NULL);
@@ -48,31 +60,18 @@ t_animation	*new_animation_player(char *name, char *path, t_win win)
 	return (a);
 }
 
-t_animation	*new_animation_collectible(char *name, char *path, t_win win)
+t_animation	*new_animation_collectible(char *name, t_win win)
 {
 	t_list		*frames;
-	t_img		*frame1;
-	t_img		*frame2;
 	t_animation	*a;
+	char		**paths;
 
-	frames = NULL;
-	(void)path;
-	frame1 = malloc(sizeof(t_img));
-	if (!frame1)
-		return (NULL);
-	frame2 = malloc(sizeof(t_img));
-	if (!frame2)
-		return (NULL);
-	*frame1 = new_file_img("./assets/pacdot_powerup.xpm", win);
-	if (!frames)
-		frames = ft_lstnew(frame1);
-	else
-		ft_lstadd_back(&frames, ft_lstnew(frame1));
-	*frame2 = new_file_img("./assets/pacdot_food.xpm", win);
-	if (!frames)
-		frames = ft_lstnew(frame2);
-	else
-		ft_lstadd_back(&frames, ft_lstnew(frame2));
+	paths = ft_calloc(3, sizeof(char *));
+	paths[0] = ft_strdup("assets/pacdot_powerup.xpm");
+	paths[1] = ft_strdup("assets/pacdot_food.xpm");
+	paths[2] = NULL;
+	frames = get_frames(paths, 2, win);
+	ft_free_2d_array((void **)paths);
 	a = (t_animation *)malloc(sizeof(t_animation));
 	if (!a)
 		return (NULL);
@@ -84,32 +83,18 @@ t_animation	*new_animation_collectible(char *name, char *path, t_win win)
 	return (a);
 }
 
-t_animation	*new_animation_enemy(char *name, char *path, t_win win)
+t_animation	*new_animation_enemy(char *name, t_win win)
 {
 	t_list		*frames;
-	t_img		*frame1;
-	t_img		*frame2;
 	t_animation	*a;
+	char		**paths;
 
-	frames = NULL;
-	(void)path;
-	frame1 = malloc(sizeof(t_img));
-	if (!frame1)
-		return (NULL);
-	frame2 = malloc(sizeof(t_img));
-	if (!frame2)
-		return (NULL);
-	(void)path;
-	*frame1 = new_file_img("./assets/ghost_left1.xpm", win);
-	if (!frames)
-		frames = ft_lstnew(frame1);
-	else
-		ft_lstadd_back(&frames, ft_lstnew(frame1));
-	*frame2 = new_file_img("./assets/ghost_left2.xpm", win);
-	if (!frames)
-		frames = ft_lstnew(frame2);
-	else
-		ft_lstadd_back(&frames, ft_lstnew(frame2));
+	paths = ft_calloc(3, sizeof(char *));
+	paths[0] = ft_strdup("assets/ghost_left1.xpm");
+	paths[1] = ft_strdup("assets/ghost_left2.xpm");
+	paths[2] = NULL;
+	frames = get_frames(paths, 2, win);
+	ft_free_2d_array((void **)paths);
 	a = (t_animation *)malloc(sizeof(t_animation));
 	if (!a)
 		return (NULL);
@@ -121,22 +106,18 @@ t_animation	*new_animation_enemy(char *name, char *path, t_win win)
 	return (a);
 }
 
-t_animation	*new_animation_exit_portal(char *name, char *path, t_win win)
+t_animation	*new_animation_exit_portal(char *name, t_win win)
 {
 	t_list		*frames;
-	t_img		*frame1;
+	t_img		*frame;
 	t_animation	*a;
 
 	frames = NULL;
-	(void)path;
-	frame1 = malloc(sizeof(t_img));
-	if (!frame1)
+	frame = malloc(sizeof(t_img));
+	if (!frame)
 		return (NULL);
-	*frame1 = new_file_img("./assets/portal.xpm", win);
-	if (!frames)
-		frames = ft_lstnew(frame1);
-	else
-		ft_lstadd_back(&frames, ft_lstnew(frame1));
+	*frame = new_file_img("./assets/portal.xpm", win);
+	frames = ft_lstnew(frame);
 	a = (t_animation *)malloc(sizeof(t_animation));
 	if (!a)
 		return (NULL);
@@ -147,4 +128,3 @@ t_animation	*new_animation_exit_portal(char *name, char *path, t_win win)
 	a->current_frame_num = 0;
 	return (a);
 }
-
