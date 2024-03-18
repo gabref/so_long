@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 22:03:09 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/13 13:51:46 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:53:14 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	destroy_image_helper(void *ptr)
 		destroy_image(*img);
 }
 
-void   destroy_animation(void *ptr)
+void	destroy_animation(void *ptr)
 {
 	t_animation	*anim;
 
@@ -33,19 +33,18 @@ void   destroy_animation(void *ptr)
 	free(anim->name);
 }
 
-void	update_animation(t_animation * a, t_ent * ent, t_img game_img) {
-	t_img *	img;
-	int x, y;
+void	update_animation(t_animation *a, t_ent *ent, t_img game_img)
+{
+	t_img	*img;
 
 	if (!a || !ent)
 		return ;
-	if (a->_tmp_delay++ == a->delay) {
+	if (a->_tmp_delay++ == a->delay)
+	{
 		a->_tmp_delay = 0;
 		a->current_frame_num++;
 		a->current_frame_num %= ft_lstsize(a->frames);
 	}
 	img = (t_img *)ft_lstget(a->frames, a->current_frame_num)->content;
-	x = ent->x % img->win.width;
-	y = ent->y % img->win.height;
-	put_img_to_img(game_img, *img, x, y);
+	put_img_to_img(game_img, *img, ent->x, ent->y);
 }

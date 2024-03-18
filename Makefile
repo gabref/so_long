@@ -6,7 +6,7 @@
 #    By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2024/03/16 15:19:14 by galves-f         ###   ########.fr        #
+#    Updated: 2024/03/18 15:56:39 by galves-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,22 @@ SRCS_PATH		= src
 
 INCLUDE_PATH	= inc
 
-SRCS			= check_args.c game.c utils_window.c utils_image.c animation.c score.c
+SRCS 			= animation.c \
+					animation_create.c \
+					assets.c \
+					check_map.c \
+					check_args.c \
+					collision.c \
+					entity.c \
+					exit.c \
+					game.c \
+					move.c \
+					render_map.c \
+					score.c \
+					utils.c \
+					utils_image.c \
+					utils_window.c
+
 MAIN			= main.c
 
 LIBS_DIR 		= libs
