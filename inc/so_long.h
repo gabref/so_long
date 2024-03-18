@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:14:32 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/16 16:09:24 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:49:20 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,12 +165,26 @@ typedef struct s_actions
 	int				attack;
 }					t_actions;
 
+typedef enum e_direction
+{
+	STOPED,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+	UP_LEFT,
+	UP_RIGHT,
+	DOWN_LEFT,
+	DOWN_RIGHT,
+}					t_direction;
+
 typedef struct s_game
 {
 	uint64_t		created_at;
 	uint64_t		updated_at;
 	int				moves;
 	int				fps;
+	t_direction		cur_dir;
 	t_map			*map;
 	t_win			win;
 	t_img			game_img;

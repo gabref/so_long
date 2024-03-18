@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:48:08 by galves-f          #+#    #+#             */
-/*   Updated: 2024/03/16 16:09:48 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/03/18 01:01:45 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,6 +358,38 @@ int	check_collision_x(t_point cp, t_point np, char c, t_game *g)
 	return (0);
 }
 
+int change_direction(t_point cp, t_point np, t_game *g)
+{
+	t_direction	dir;
+
+	dir = STOPED;
+	if (np.x == cp.x && np.y == cp.y)
+		dir = STOPED;
+	else if (np.x == cp.x && np.y < cp.y)
+		dir = DOWN;
+	else if (np.x == cp.x && np.y > cp.y)
+		dir = UP;
+	else if (np.x < cp.x && np.y == cp.y)
+		dir = LEFT;
+	else if (np.x > cp.x && np.y == cp.y)
+		dir = RIGHT;
+	else if (np.x < cp.x && np.y < cp.y)
+		dir = DOWN_LEFT;
+	else if (np.x > cp.x && np.y < cp.y)
+		dir = DOWN_RIGHT;
+	else if (np.x < cp.x && np.y > cp.y)
+		dir = UP_LEFT;
+	else if (np.x > cp.x && np.y > cp.y)
+		dir = UP_RIGHT;
+	if (dir != g->cur_dir && dir != STOPED || dir != g->cur_dir && g->cur_dir == STOPED)
+	{
+		g->cur_dir = dir;
+		return (1);
+	}
+	g->cur_dir = dir;
+	return (0);
+}
+
 void	move_player(t_ent *ent, t_game *g, t_actions *a)
 {
 	t_point		curr_point;
@@ -379,8 +411,8 @@ void	move_player(t_ent *ent, t_game *g, t_actions *a)
 		ent->x = next_point.x;
 	if (!check_collision_y(curr_point, next_point, '1', g))
 		ent->y = next_point.y;
-	// check new movement
-	g->moves++;
+	if (change_direction(curr_point, next_point, g))
+		g->moves++;
 }
 
 void	update_player(t_actions *a, t_game *g)
@@ -550,6 +582,7 @@ void	game_init(t_map *map)
 	t_game	game;
 
 	game.moves = 0;
+	game.cur_dir = STOPED;
 	game.ents = NULL;
 	game.cur_actions = (t_actions){0, 0, 0, 0, 0};
 	game.map = map;
