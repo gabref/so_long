@@ -7,7 +7,7 @@
 	<img alt="Code language count" src="https://img.shields.io/github/languages/count/gabref/so_long?color=blue&style=flat-square" />
 	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/gabref/so_long?color=green&style=flat-square" />
 	<br/>
-  	A journey to understand sorting algo.
+  	A journey into game development.
 </p>
 
 ![image](./assets/solong.png)
