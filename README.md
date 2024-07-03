@@ -2,6 +2,9 @@
 
 ![image](./assets/solong.png)
 
+# Art
+Credit to https://github.com/madebypixel02/so_long who made these amazing maps and sprites.
+
 ## Requirements
 
 Install the following libraries:
