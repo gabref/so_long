@@ -13,6 +13,7 @@
 ![image](./assets/solong.png)
 
 ## Credit
+
 Credit to https://github.com/madebypixel02/so_long who made these amazing maps and sprites.
 
 ## Requirements
@@ -29,6 +30,8 @@ sudo apt-get -y install libbsd-dev
 make
 ./so_long maps/map.ber
 ```
+
+Also play with others maps in the maps directory.
 
 ## How to play
 
